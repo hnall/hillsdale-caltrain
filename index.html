@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Caltrain Departures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      margin: 0;
+      padding-top: 40px;
+      width: 1920px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h2 {
+      text-align: center;
+      padding: 30px;
+      background: #fff;
+      color: #B82525; /* Caltrain red */
+      margin: 0;
+      font-size: 72px; /* bigger header */
+      font-weight: bold;
+    }
+
+    .tables {
+      flex: 1;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 850px;
+      background: #fff;
+      font-size: 36px; /* bigger text */
+    }
+
+    th, td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      color: #B82525;
+      font-size: 38px;
+    }
+
+    h3 {
+      text-align: center;
+      color: #B82525;
+      font-size: 56px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    /* Train type labels */
+    .type-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      font-size: 26px;
+    }
+    .Express {
+      background-color: #B82525;
+      color: #fff;
+    }
+    .Limited {
+      background-color: #7BB7BD;
+      color: #000;
+    }
+    .Local {
+      background-color: #000;
+      color: #fff;
+    }
+
+    /* Time gray box */
+    .time-box {
+      background: #eee;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h2>Caltrain Departures – Hillsdale</h2>
+  <div class="tables">
+    <div>
+      <h3>Northbound</h3>
+      <table id="north"><tr><th>Train #</th><th>Type</th><th>Departs In</th><th>Time</th></tr></table>
+    </div>
+    <div>
+      <h3>Southbound</h3>
+      <table id="south"><tr><th>Train #</th><th>Type</th><th>Departs In</th><th>Time</th></tr></table>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "Lp3ULQOS4VUNkWbscGGSSQwDcQ5jifF9";
+    const NORTHBOUND_ID = "s-9q9j8fqv83-hillsdalecaltrainstationnorthbound";
+    const SOUTHBOUND_ID = "s-9q9j8fqths-hillsdalecaltrainstationsouthbound";
+
+    async function loadDepartures(stopId, tableId) {
+      const url = `https://transit.land/api/v2/rest/stops/${stopId}/departures?next=7200&limit=10&apikey=${API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const departures = data.stops?.[0]?.departures || [];
+
+        const table = document.getElementById(tableId);
+        table.innerHTML = "<tr><th>Train #</th><th>Type</th><th>Departs In</th><th>Time</th></tr>";
+
+        if (departures.length === 0) {
+          table.innerHTML += `<tr><td colspan="4">No upcoming trains</td></tr>`;
+          return;
+        }
+
+        departures.forEach(dep => {
+          const trainNum = dep.trip?.trip_short_name || "–";
+          const typeRaw = dep.trip?.route?.route_short_name || "–";
+          let trainType = `<span>${typeRaw}</span>`;
+          if (typeRaw.includes("Express")) {
+            trainType = `<span class="type-label Express">Express</span>`;
+          } else if (typeRaw.includes("Limited")) {
+            trainType = `<span class="type-label Limited">Limited</span>`;
+          } else if (typeRaw.includes("Local")) {
+            trainType = `<span class="type-label Local">Local Weekday</span>`;
+          }
+
+          const departISO = dep.departure?.estimated_local || dep.departure?.scheduled_local;
+          const departDate = new Date(departISO);
+          const departTime = `<span class="time-box">${departDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>`;
+          const minsAway = Math.max(0, Math.round((departDate - new Date()) / 60000));
+
+          const row = `<tr>
+            <td>${trainNum}</td>
+            <td>${trainType}</td>
+            <td>${minsAway} min</td>
+            <td>${departTime}</td>
+          </tr>`;
+          table.innerHTML += row;
+        });
+      } catch (err) {
+        console.error("Error loading departures:", err);
+        document.getElementById(tableId).innerHTML = "<tr><td colspan='4'>Error loading data</td></tr>";
+      }
+    }
+
+    function refresh() {
+      loadDepartures(NORTHBOUND_ID, "north");
+      loadDepartures(SOUTHBOUND_ID, "south");
+    }
+
+    refresh();
+    setInterval(refresh, 60000);
+  </script>
+</body>
+</html>
