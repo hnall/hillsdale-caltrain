@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=450, height=800, initial-scale=1" />
+<title>Caltrain · Hillsdale</title>
+<script>
+
+// these are the settings - change here
+window.SIGN_CONFIG = {
+  menuUrl: "https://raw.githubusercontent.com/WatoBato/USDisplay/refs/heads/main/smMenu.json",
+  announcementsUrl: "https://raw.githubusercontent.com/WatoBato/USDisplay/refs/heads/main/announcements.json",
+  
+  // this is what the board chooses to show and when
+  times: { half: "11:00", more: "13:30", all: "14:45" },
+
+  // api endpoint
+  station: "hillsdale",
+  api: "https://transitapi.transbay.dev/v2/caltrain/nueva",
+
+  // weather location.
+  weather: { lat: 37.563, lon: -122.3255 },
+};
+/* everything below here is just the code to run the thing */
+</script>
+<style>
+@font-face { font-family: "Sailec"; src: url("https://raw.githubusercontent.com/hnall/sailec-font/main/Type%20Dynamic%20-%20Sailec.otf") format("opentype"); font-weight: 400;
+  ascent-override: 87.4%; descent-override: 12.6%; line-gap-override: 25%; }
+@font-face { font-family: "Sailec"; src: url("https://raw.githubusercontent.com/hnall/sailec-font/main/Type%20Dynamic%20-%20Sailec%20Bold.otf") format("opentype"); font-weight: 700;
+  ascent-override: 87.4%; descent-override: 12.6%; line-gap-override: 25%; }
+:root { --sh: 0px; --red: #b82525; --ink: #111; --ink-2: #666; --muted: #a3a3a3; --rule: #e6e6e6; --box: #eee; --limited: #7bb7bd;
+  --nueva: #0028bc; --veg: #228b22; --vegan: #7d3c98; --sandwich: #0077ff; --salad: #008080; --soup: #e07800; }
+.no-override { --sh: .124em; }
+.hdr h1, .hdr .clk, .shdr h2, .shdr span, .later .in, .hero .list span, .hero .list b, .chero .list span, .chero .list b,
+.cols .crow .in, .cols .stops span, .cols .stops b, .wx-now span, .wx-row em, .offline span, .nalert b, .nalert span { position: relative; top: var(--sh); }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; width: 450px; height: 800px; overflow: hidden; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { background: #fff; color: var(--ink); font-family: "Sailec", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", sans-serif; }
+.sign { position: relative; width: 450px; height: 800px; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
+.connecting { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-weight: 600; font-size: 18px; color: #777; z-index: 40; }
+.connecting small { display: block; margin-top: 8px; font-size: 13px; font-weight: 500; opacity: .8; }
+.region { position: relative; flex: none; overflow: hidden; }
+.region.grow { flex: 1 1 auto; min-height: 0; }
+.hdr { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; border-bottom: 2px solid var(--red); }
+.hdr h1 { margin: 0; font-size: 24px; font-weight: 700; color: var(--red); line-height: 1; }
+.hdr .clk { font-size: 20px; font-weight: 400; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+main.board { position: absolute; top: 54px; left: 0; right: 0; bottom: 0; overflow: hidden; padding-top: 22px; display: flex; flex-direction: column; }
+.dir { margin: 0 22px; }
+main.board > .dir { flex: 1 0 auto; margin-left: 26px; margin-right: 26px; }
+.dir + .dir { margin-top: 30px; }
+.dir-title { margin: 0 0 14px; display: flex; align-items: baseline; justify-content: space-between; font-size: 22px; font-weight: 700; color: var(--red); }
+.dir-title small { font-size: 14.5px; font-weight: 400; color: var(--ink-2); }
+.notice { margin: 2px 0 16px; padding: 10px 13px 11px; border-radius: 4px; background: #fab14b; border: 2.5px solid #f79734; font-size: 16.5px; font-weight: 700; line-height: 1.3; color: var(--ink); }
+.notice span { display: block; margin-top: 2px; font-size: 14.5px; font-weight: 400; color: var(--ink); }
+.notice.minor { background: #fde3a6; border-color: #f5c24a; }
+.badge { display: inline-block; padding: calc(3.5px + var(--sh)) 8px calc(3.5px - var(--sh)); border-radius: 3px; font-size: 16px; font-weight: 700; line-height: 1.2; background: #000; color: #fff; white-space: nowrap; }
+.badge.Limited { background: var(--limited); color: #000; }
+.badge.Express { background: var(--red); color: #fff; }
+.badge.is-cancelled { background: #bbb; color: #fff; }
+.tbox { display: inline-block; padding: calc(4.5px + var(--sh)) 9px calc(4.5px - var(--sh)); border-radius: 4px; background: var(--box); font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbox.is-cancelled { text-decoration: line-through; color: #999; background: #f4f4f4; }
+.note { display: block; font-size: 13.5px; font-weight: 700; color: var(--red); line-height: 1.2; }
+.empty { padding: 14px 0; color: var(--ink-2); font-size: 18px; }
+.hero { display: grid; grid-template-columns: 1fr 186px; column-gap: 18px; padding: 0 0 22px; border-bottom: 1px solid var(--rule); }
+.hero .when { min-width: 0; }
+.hero .when .badge { display: inline-flex; align-items: center; height: 30px; padding: calc(2 * var(--sh)) 9px 0; margin-bottom: 10px; }
+.hero .when .big { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.01em; }
+.hero .when .big small { font-size: 24px; margin-left: 4px; letter-spacing: 0; }
+.hero .when .sub { margin-top: 14px; display: flex; align-items: center; gap: 9px; }
+.hero .when .sub .tbox { display: inline-flex; align-items: center; flex: none; height: 30px; padding: calc(2 * var(--sh)) 10px 0; }
+.hero .when .note { font-size: 13.5px; line-height: 1.15; }
+.hero .list { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-content: space-between; border-left: 1px solid var(--rule); padding-left: 16px; font-size: 15px; color: var(--ink-2); white-space: nowrap; }
+.hero .list div { display: contents; }
+.hero .list span, .hero .list b { display: flex; align-items: center; height: 30px; }
+.hero .list b { justify-content: flex-end; color: var(--ink); font-variant-numeric: tabular-nums; }
+.hero .list .last, .hero .list .last b { color: var(--red); }
+.hero .list .off b { color: var(--muted); font-weight: 400; }
+.later { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; height: 56px; border-bottom: 1px solid var(--rule); font-size: 18px; }
+.later .badge { font-size: 14px; padding: calc(2.5px + var(--sh)) 7px calc(2.5px - var(--sh)); }
+.later .in { padding-left: 4px; }
+.later .in .note { display: inline; margin-left: 8px; font-size: 13px; }
+.later .tbox { font-size: 17px; padding: calc(3.5px + var(--sh)) 8px calc(3.5px - var(--sh)); min-width: 96px; text-align: center; }
+.later.cancelled .in { color: var(--red); font-weight: 700; }
+main.board.tight { padding-top: 12px; }
+.tight .dir + .dir { margin-top: 16px; }
+.tight .dir-title { margin-bottom: 6px; }
+.tight .notice { margin-bottom: 8px; padding: 8px 11px 9px; }
+.tight .hero { padding: 0 0 10px; }
+.tight .hero .when .badge { margin-bottom: 5px; }
+.tight .hero .when .big { font-size: 46px; }
+.tight .hero .when .sub { margin-top: 7px; }
+.tight .hero .list span, .tight .hero .list b { height: 26px; }
+.tight .hero .when .badge, .tight .hero .when .sub .tbox { height: 26px; }
+.tight .later { height: 40px; }
+.ct.half .hdr { height: 44px; padding: 0 22px; }
+.ct.half .hdr h1 { font-size: 22px; }
+.ct.half .hdr .clk { font-size: 18px; }
+.ct.half main.board { top: 44px; padding: 2px 0 4px; justify-content: space-evenly; }
+.ct.half main.board > .dir { flex: none; margin-left: 22px; margin-right: 22px; }
+.ct.half .dir + .dir { margin-top: 0; }
+.ct.half .dir-title { font-size: 20px; margin-bottom: 6px; }
+.ct.half .dir-title small { font-size: 14px; }
+.ct.half .notice { margin: 0 0 8px; padding: 6px 10px 7px; font-size: 15px; text-wrap: balance; }
+.ct.half .notice span { font-size: 13.5px; }
+.chero { display: grid; grid-template-columns: 1fr 180px; column-gap: 16px; padding: 0 0 10px; border-bottom: 1px solid var(--rule); }
+.chero .when { min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.chero .big { display: flex; align-items: baseline; gap: 10px; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+.chero .big small { font-size: 20px; margin-left: 4px; letter-spacing: 0; }
+.chero .big .note { font-size: 13px; letter-spacing: 0; align-self: center; }
+.chero .sub { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.chero .sub .badge { display: inline-flex; align-items: center; height: 28px; padding: calc(2 * var(--sh)) 9px 0; font-size: 15px; }
+.chero .sub .tbox { display: inline-flex; align-items: center; height: 28px; padding: calc(2 * var(--sh)) 10px 0; font-size: 18px; }
+.chero .list { display: grid; grid-template-columns: 1fr auto; column-gap: 10px; align-content: space-between; border-left: 1px solid var(--rule); padding-left: 14px; font-size: 15px; color: var(--ink-2); white-space: nowrap; }
+.chero .list div { display: contents; }
+.chero .list span, .chero .list b { display: flex; align-items: center; height: 22px; }
+.chero .list b { justify-content: flex-end; color: var(--ink); font-variant-numeric: tabular-nums; }
+.chero .list .last, .chero .list .last b { color: var(--red); }
+.chero .list .off b { color: var(--muted); font-weight: 400; }
+.ct.half .later { height: 38px; font-size: 16.5px; grid-template-columns: 86px 1fr auto; }
+.ct.half .later .badge { font-size: 13px; padding: calc(2.5px + var(--sh)) 6px calc(2.5px - var(--sh)); }
+.ct.half .later .tbox { font-size: 15px; padding: calc(2.5px + var(--sh)) 7px calc(2.5px - var(--sh)); min-width: 86px; }
+.ct.half .later .in .note { font-size: 12.5px; }
+.ct.half main.board.tight { padding-top: 6px; }
+.ct.half .tight .dir + .dir { margin-top: 0; }
+.ct.half .tight .chero .sub .badge, .ct.half .tight .chero .sub .tbox { height: 26px; }
+.ct.half .tight .later { font-size: 16px; }
+.ct.half .tight .dir-title { margin-bottom: 3px; font-size: 18px; }
+.ct.half .tight .notice { margin-bottom: 5px; padding: 4px 9px 5px; font-size: 14px; }
+.ct.half .tight .chero { padding-bottom: 6px; }
+.ct.half .tight .chero .big { font-size: 36px; }
+.ct.half .tight .chero .sub { margin-top: 5px; }
+.ct.half .tight .chero .list span, .ct.half .tight .chero .list b { height: 17px; }
+.ct.half .tight .later { height: 31px; }
+.ct.half main.board.tighter { padding-top: 4px; }
+.ct.half .tighter .dir + .dir { margin-top: 0; }
+.ct.half .tighter .dir-title { margin-bottom: 2px; font-size: 17px; line-height: 1.1; }
+.ct.half .tighter .notice { margin-bottom: 4px; padding: 3px 8px 4px; font-size: 13.5px; line-height: 1.22; border-width: 2px; }
+.ct.half .tighter .chero { padding-bottom: 4px; }
+.ct.half .tighter .chero .big { font-size: 30px; }
+.ct.half .tighter .chero .sub { margin-top: 4px; }
+.ct.half .tighter .chero .sub .badge, .ct.half .tighter .chero .sub .tbox { height: 23px; }
+.ct.half .tighter .chero .list span, .ct.half .tighter .chero .list b { height: 15px; font-size: 13.5px; }
+.ct.half .tighter .later { height: 28px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) { padding: 4px 0 6px; justify-content: space-evenly; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) > .dir { flex: none; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .dir + .dir { margin-top: 0; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .dir-title { margin-bottom: 10px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero { padding-bottom: 14px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero .when .badge { height: 28px; margin-bottom: 6px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero .when .big { font-size: 50px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero .when .sub { margin-top: 8px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero .when .sub .tbox { height: 28px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .hero .list span, :is(.ct.mid main.board:not(.tight), main.board.mid) .hero .list b { height: 28px; }
+:is(.ct.mid main.board:not(.tight), main.board.mid) .later { height: 50px; }
+.nalert { padding: 8px 22px 9px; background: #efefed; text-align: center; }
+.nalert + .nalert { border-top-color: #dcdcda; }
+.nalert b { display: block; font-size: 16px; line-height: 1.2; color: var(--ink); }
+.nalert span { display: block; margin-top: 1px; font-size: 13.5px; line-height: 1.2; color: var(--ink-2); }
+.offline { height: 44px; display: flex; align-items: center; justify-content: center; border-bottom: 2px solid var(--red); color: var(--red); font-size: 18px; font-weight: 700; }
+.school { border-top: 8px solid #ecebe8; }
+#layout > .school:first-child { border-top: 0; }
+.shdr { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; border-bottom: 2px solid var(--nueva); }
+.shdr h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--nueva); line-height: 1; white-space: nowrap; }
+.shdr span { font-size: 16px; color: var(--ink-2); white-space: nowrap; }
+.sbody { position: absolute; top: 44px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 12px 22px 10px; display: flex; flex-direction: column; justify-content: space-evenly; text-align: center; }
+.school.share { flex: 1 0 auto; display: flex; flex-direction: column; }
+.school.share .sbody { position: static; flex: 1 1 auto; padding: 14px 22px 16px; }
+.none { color: var(--ink-2); font-size: 17px; }
+.lunch { display: flex; flex-direction: column; justify-content: space-evenly; flex: 1 1 auto; gap: 6px; }
+.school.share .lunch { gap: 7px; }
+.lunch h3 { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.2; }
+.lunch p { margin: 1px 0 0; font-size: 16px; line-height: 1.3; color: var(--ink); }
+.lunch .inline { margin: 0; font-size: 16px; line-height: 1.25; text-wrap: balance; }
+.lunch .inline b { margin-right: 6px; }
+.k-omnivore { color: var(--ink); }
+.k-vegetarian, .k-vegetarian.k-vegan { color: var(--veg); }
+.k-vegan { color: var(--vegan); }
+.k-sandwich { color: var(--sandwich); }
+.k-salad { color: var(--salad); }
+.k-soup { color: var(--soup); }
+.ann { display: flex; flex-direction: column; gap: 10px; }
+.ann .a b { display: block; font-size: 17px; line-height: 1.25; }
+.ann .a span { display: block; margin-top: 2px; font-size: 14.5px; line-height: 1.3; color: var(--ink-2); }
+.ann.big { gap: 0; justify-content: space-evenly; flex: 1 1 auto; }
+.ann.big .a b { font-size: 23px; }
+.ann.big .a span { margin-top: 4px; font-size: 17.5px; }
+.ico { display: block; flex: none; overflow: visible; }
+.wx-now { display: flex; align-items: center; justify-content: center; gap: 12px; white-space: nowrap; font-size: 16px; color: var(--ink-2); }
+.wx-now .ico { width: 40px; height: 40px; }
+.wx-now .t { font-size: 34px; font-weight: 700; color: var(--ink); line-height: 1; }
+.wx-now b { color: var(--ink); }
+.wx-now .rain { color: #2f6fc8; font-weight: 700; }
+.wx-row { display: flex; justify-content: space-evenly; margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.wx-row span { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.wx-row small { font-size: 12.5px; }
+.wx-row em { display: inline-flex; align-items: center; gap: 5px; font-style: normal; }
+.wx-row .ico { width: 22px; height: 22px; }
+.wx-row b { color: var(--ink); font-size: 15px; }
+.wx-row i { font-style: normal; font-size: 12.5px; font-weight: 700; color: #2f6fc8; }
+</style>
+</head>
+<body>
+<div class="sign" id="sign"><div id="layout" style="display: contents"></div>
+<div class="connecting" id="connecting">Connecting to live Caltrain times…<small>Times will appear in a moment</small></div></div>
+<script>
+const DAYPARTS = (function () {
+  const TZ = "America/Los_Angeles";
+  const min = (h, m = 0) => h * 60 + m;
+  const STAGES = [
+    { id: "school", from: 0, height: 0 },
+    { id: "half", from: min(11), height: 400 },
+    { id: "more", from: min(13, 30), height: 560 },
+    { id: "all", from: min(14, 45), height: 800 },
+  ];
+  const LUNCH_SWITCH = min(13);
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ, hourCycle: "h23", weekday: "short",
+    year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
+  });
+  function local(at) {
+    const o = {};
+    for (const p of fmt.formatToParts(new Date(at * 1000))) o[p.type] = p.value;
+    const hh = +o.hour % 24, mm = +o.minute;
+    return { ymd: `${o.year}-${o.month}-${o.day}`, hh, mm, minutes: hh * 60 + mm, weekend: o.weekday === "Sat" || o.weekday === "Sun" };
+  }
+  const toMin = t => { const [h, m] = String(t).split(":").map(Number); return h * 60 + (m || 0); };
+  function stage(at, times) {
+    const l = local(at);
+    if (l.weekend || l.minutes < min(4)) return STAGES[3];
+    const from = s => (times && times[s.id] ? toMin(times[s.id]) : s.from);
+    let s = STAGES[0];
+    for (const x of STAGES) if (l.minutes >= from(x)) s = x;
+    return s;
+  }
+  return { TZ, STAGES, LUNCH_SWITCH, local, stage, toMin };
+})();
+const SCHOOL_CORE = (function (DP) {
+  const pad = n => String(n).padStart(2, "0");
+  function addDays(ymd, n) {
+    const d = new Date(`${ymd}T12:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+  const dayName = ymd => new Date(`${ymd}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long" });
+  const dateLabel = ymd => new Date(`${ymd}T12:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
+  function describe(code, night) {
+    if (code == null) return { label: "", icon: "cloud" };
+    const c = +code;
+    if (c <= 1) return { label: c ? "Mostly clear" : "Clear", icon: night ? "moon" : "sun" };
+    if (c === 2) return { label: "Partly cloudy", icon: night ? "cloud-moon" : "cloud-sun" };
+    if (c === 3) return { label: "Cloudy", icon: "cloud" };
+    if (c === 45 || c === 48) return { label: "Fog", icon: "fog" };
+    if (c >= 51 && c <= 57) return { label: "Drizzle", icon: "rain" };
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return { label: c >= 80 ? "Showers" : "Rain", icon: "rain" };
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return { label: "Snow", icon: "snow" };
+    if (c >= 95) return { label: "Thunderstorms", icon: "storm" };
+    return { label: "", icon: "cloud" };
+  }
+  const isNight = hh => hh < 7 || hh >= 18;
+  function weather(l, om) {
+    if (!om || !om.hourly) return null;
+    const h = om.hourly, times = h.time || [], d = om.daily || {};
+    const i = times.indexOf(`${l.ymd}T${pad(l.hh)}:00`);
+    const rain = j => (h.precipitation_probability ? h.precipitation_probability[j] : null);
+    const now = i >= 0 && h.temperature_2m[i] != null
+      ? { temp: Math.round(h.temperature_2m[i]), rainChance: rain(i), ...describe(h.weather_code[i], isNight(l.hh)) } : null;
+    const di = (d.time || []).indexOf(l.ymd);
+    const today = di >= 0 && d.temperature_2m_max[di] != null && d.temperature_2m_min[di] != null
+      ? { hi: Math.round(d.temperature_2m_max[di]), lo: Math.round(d.temperature_2m_min[di]) } : null;
+    if (!now && !today) return null;
+    const hours = [];
+    for (let j = i + 1; i >= 0 && j < times.length && hours.length < 24; j++) {
+      if (h.temperature_2m[j] == null) continue;
+      const hh = +times[j].slice(11, 13);
+      hours.push({ time: times[j], hh, temp: Math.round(h.temperature_2m[j]), rainChance: rain(j), ...describe(h.weather_code[j], isNight(hh)) });
+    }
+    const rest = hours.filter(x => x.time.slice(0, 10) === l.ymd);
+    const restOfDayRain = Math.max(now ? now.rainChance || 0 : 0, ...rest.map(x => x.rainChance || 0));
+    return { now, today, restOfDayRain, hours };
+  }
+  const LABELS = { omnivore: "Main", vegetarian: "Vegetarian", vegan: "Vegan", sandwich: "Sandwich", salad: "Salad", soup: "Soup" };
+  const ORDER = ["omnivore", "vegetarian", "vegan", "soup", "sandwich", "salad"];
+  function dishName(s) {
+    const parts = s.split(/,|\s+with\s+|\s+-\s+|-(?=[A-Z])|\s+in\s+a\s+|\s+on\s+a\s+|\s+served\s+|\s+(?:seasoned|rubbed|marinated)\s+in\s+/i)
+      .map(x => x.trim()).filter(Boolean)
+      .map(x => x.replace(/^marinated in .*?spices\s+(?!and\b)/i, ""));
+    let i = 0;
+    while (i < parts.length - 1 && (/^marinated in\b/i.test(parts[i]) || /\bsauce$/i.test(parts[i]))) i++;
+    const cut = parts[i] || s;
+    return cut.length >= 6 ? cut : s;
+  }
+  function menuFor(day) {
+    if (!day || !Object.keys(day).length) return null;
+    const sections = [];
+    for (const [key, sec] of Object.entries(day)) {
+      const items = (sec && sec.items) || [];
+      if (!items.length) continue;
+      if (key === "omnivore" && items.length > 1) {
+        sections.push({ key: "omnivore", label: LABELS.omnivore, items: items.slice(1) });
+        sections.push({ key: "soup", label: LABELS.soup, items: [items[0]] });
+      } else sections.push({ key, label: LABELS[key] || key, items: items.slice() });
+    }
+    if (!sections.length) return null;
+    sections.sort((a, b) => (ORDER.indexOf(a.key) + 99) % 99 - (ORDER.indexOf(b.key) + 99) % 99);
+    const mergeable = k => ["omnivore", "vegetarian", "vegan"].some(x => k.split(" ").includes(x));
+    for (let i = 0; i < sections.length; i++) {
+      for (let j = i + 1; j < sections.length; j++) {
+        const a = sections[i], b = sections[j];
+        if (mergeable(a.key) && mergeable(b.key) && JSON.stringify(a.items) === JSON.stringify(b.items)) {
+          a.label = `${a.label} & ${b.label}`; a.key = `${a.key} ${b.key}`;
+          sections.splice(j--, 1);
+        }
+      }
+    }
+    for (const s of sections) s.short = s.items.map(dishName);
+    return sections;
+  }
+  function lunch(l, menu) {
+    if (!menu) return null;
+    const start = l.minutes >= DP.LUNCH_SWITCH ? addDays(l.ymd, 1) : l.ymd;
+    for (let i = 0; i < 5; i++) {
+      const date = addDays(start, i);
+      const sections = menuFor(menu[date]);
+      if (!sections) continue;
+      const when = date === l.ymd ? "Today" : date === addDays(l.ymd, 1) ? "Tomorrow" : dayName(date);
+      return { when, dateLabel: dateLabel(date), sections };
+    }
+    return null;
+  }
+  function announcements(l, list) {
+    return (list || []).filter(a => a && a.text && (!a.starts || a.starts <= l.ymd) && (!a.ends || a.ends >= l.ymd))
+      .map(a => ({ text: a.text, detail: a.detail || null }));
+  }
+  function parseAnnouncements(text) {
+    const j = JSON.parse(String(text ?? "").replace(/^\uFEFF/, ""));
+    return (Array.isArray(j) ? j : j.items || (j.text ? [j] : [])).filter(a => a && String(a.text ?? "").trim())
+      .map(a => ({ text: String(a.text).trim(), detail: a.detail || undefined, starts: a.starts || undefined, ends: a.ends || undefined }));
+  }
+  function today(at, { menu, weather: om, announcements: list } = {}) {
+    const l = DP.local(at);
+    return {
+      lunch: lunch(l, menu),
+      weather: weather(l, om),
+      announcements: announcements(l, list),
+    };
+  }
+  return { today, addDays, parseAnnouncements };
+})(DAYPARTS);
+(function () {
+  const S = window.SIGN_CONFIG;
+  const API = S.api.replace(/\/$/, ""), POLL = S.poll || 20;
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const etags = new Map(), bodies = new Map();
+  async function get(path, params) {
+    const url = new URL(API + path, location.href);
+    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+    const key = url.toString(), headers = {};
+    if (etags.has(key)) headers["If-None-Match"] = etags.get(key);
+    const res = await fetch(key, { headers, cache: "no-store" });
+    if (res.status === 304 && bodies.has(key)) return bodies.get(key);
+    if (!res.ok) throw new Error(`${path} → HTTP ${res.status}`);
+    const body = await res.json();
+    if (res.headers.get("ETag")) etags.set(key, res.headers.get("ETag"));
+    bodies.set(key, body);
+    return body;
+  }
+  function poll(params, render) {
+    let board = null, ok = 0;
+    (async function tick() {
+      try { board = await get("/board", { station: S.station, ...params }); ok = Date.now(); } catch (e) { console.warn("Caltrain", e); }
+      try { render(Date.now() - ok < 120000 ? board : null); } catch (e) { console.error("render failed", e); }
+      setTimeout(tick, POLL * 1000);
+    })();
+  }
+  const tzFmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", minute: "2-digit", hourCycle: "h23" });
+  const hm = at => tzFmt.format(new Date(at * 1000)).split(":").map(Number);
+  const clock = at => { const [h, m] = hm(at); return `${h % 12 || 12}:${String(m).padStart(2, "0")}`; };
+  const clock12 = at => clock(at) + (hm(at)[0] < 12 ? "am" : "pm");
+  const timeText = at => `${clock(at)} ${hm(at)[0] < 12 ? "AM" : "PM"}`;
+  const SHORT = { "Redwood City": "RWC", "San Jose Diridon": "San Jose", "South San Francisco": "South SF", "California Avenue": "Cal Ave" };
+  const isCancelled = t => t.status === "cancelled";
+  const lateMin = t => Math.round(t.delay.seconds / 60);
+  function departsIn(t, board) {
+    if (t.position && t.position.atStation === board.station.name && t.minutes <= 1) return "Now";
+    return t.minutes === 0 ? "Due" : `${t.minutes} min`;
+  }
+  function problem(t) {
+    if (isCancelled(t)) return t.replacedBy ? `Take train ${t.replacedBy}` : "Not running";
+    if (t.status === "held_at_station" && t.held) return `Held at ${SHORT[t.held.station] || t.held.station}`;
+    if (t.status === "held_at_origin") return t.delay ? `+${lateMin(t)}m late` : "Waiting to depart";
+    return t.delay ? `+${lateMin(t)}m late` : "";
+  }
+  const STOPS = {
+    NB: [["burlingame", "Burlingame"], ["millbrae", "Millbrae"], ["22nd", "22nd Street"], ["sf", "San Francisco"]],
+    SB: [["redwood-city", "Redwood City"], ["palo-alto", "Palo Alto"], ["mountain-view", "Mountain View"], ["san-jose", "San Jose"]],
+  };
+  function stopList(t, dir) {
+    const ds = t.downstream || [], list = STOPS[dir] || [];
+    const endsShort = t.terminatesAt && list.length && !ds.some(x => x.slug === list[list.length - 1][0]);
+    return list.map(([slug, name]) => {
+      const f = ds.find(x => x.slug === slug && x.at);
+      return `<div class="${f ? (f.last && endsShort ? "last" : "") : "off"}"><span>${esc(name)}</span><b>${f ? clock(f.at) : "–"}</b></div>`;
+    }).join("");
+  }
+  function notice(dis, full) {
+    if (!dis) return "";
+    const second = full && dis.resumeAt ? `<span>Normal service around ${esc(dis.resumeAt.time)}</span>` : "";
+    return `<div class="notice ${dis.severity === "minor" ? "minor" : ""}">${esc(dis.lines[0])}${second}</div>`;
+  }
+  function fit(el, options, html) {
+    for (const o of options) {
+      el.innerHTML = html(o);
+      if (el.scrollHeight <= el.clientHeight + 1) return o;
+    }
+    return options[options.length - 1];
+  }
+  const TO = { NB: "to San Francisco", SB: "to San Jose" };
+  const title = d => `<div class="dir-title">${esc(d.label)}<small>${TO[d.dir] || ""}</small></div>`;
+  const badge = (t, c = "") => `<span class="badge ${esc(t.service)} ${c}">${esc(t.service)}</span>`;
+  const note = p => (p ? `<span class="note">${esc(p)}</span>` : "");
+  function bigIn(t, board) {
+    const s = departsIn(t, board), m = s.match(/^(\d+) min$/);
+    return m ? `${m[1]}<small>min</small>` : esc(s);
+  }
+  function split(d, n) {
+    const first = d.trains.find(t => !isCancelled(t));
+    if (!first) return { first: null, rest: [] };
+    const rest = d.trains.filter(t => t !== first && !(d.disruption && isCancelled(t) && t.departure.at < first.departure.at)).slice(0, n);
+    return { first, rest };
+  }
+  const live = list => list.filter(t => !isCancelled(t)).length;
+  const empty = (d, head) => `<section class="dir">${head}<div class="empty">No more trains today</div></section>`;
+  const fewest = counts => (counts.length ? Math.min(...counts) : null);
+  const sizes = (el, o) => { for (const k of ["roomy", "mid", "tight", "tighter"]) el.classList.toggle(k, !!o[k]); };
+  function later(t, board) {
+    const c = isCancelled(t);
+    return `<div class="later ${c ? "cancelled" : ""}"><span>${badge(t, c ? "is-cancelled" : "")}</span>
+      <span class="in">${c ? "Cancelled" : departsIn(t, board)}${note(problem(t))}</span>
+      <span class="tbox ${c ? "is-cancelled" : ""}">${timeText(c && t.departure.scheduled ? t.departure.scheduled.at : t.departure.at)}</span></div>`;
+  }
+  function layout(board, el, chain, dir) {
+    let count = [];
+    const o = fit(el, chain, o => {
+      count = [];
+      sizes(el, o);
+      return board.directions.map(d => {
+        const { first, rest } = split(d, o.later);
+        if (!first) return empty(d, title(d) + notice(d.disruption, true));
+        count.push(1 + live(rest));
+        return dir(d, first, rest, o);
+      }).join("");
+    });
+    return { fit: chain.indexOf(o), trains: fewest(count) };
+  }
+  function nextUp(board, el, chain = [{ later: 2, full: true }, { later: 1, full: true }, { later: 1, full: true, mid: true }, { later: 1, full: false, mid: true },
+    { later: 1, full: true, tight: true }, { later: 1, full: false, tight: true }]) {
+    return layout(board, el, chain, (d, t, rest, o) => `<section class="dir">${title(d)}${notice(d.disruption, o.full)}
+      <div class="hero"><div class="when">${badge(t)}<div class="big">${bigIn(t, board)}</div>
+        <div class="sub"><span class="tbox">${timeText(t.departure.at)}</span>${note(problem(t))}</div></div>
+        <div class="list">${stopList(t, d.dir)}</div></div>
+      ${rest.map(t => later(t, board)).join("")}</section>`);
+  }
+  function stacked(board, el, chain = [{ later: 1, full: true }, { later: 1, full: false }, { later: 1, full: true, tight: true }, { later: 1, full: false, tight: true }, { later: 1, full: false, tight: true, tighter: true }]) {
+    return layout(board, el, chain, (d, t, rest, o) => `<section class="dir">${title(d)}${notice(d.disruption, o.full)}
+      <div class="chero"><div class="when"><div class="big"><span>${bigIn(t, board)}</span>${note(problem(t))}</div>
+        <div class="sub">${badge(t)}<span class="tbox">${timeText(t.departure.at)}</span></div></div>
+        <div class="list">${stopList(t, d.dir)}</div></div>
+      ${rest.map(t => later(t, board)).join("")}</section>`);
+  }
+  window.CT = {
+    poll, esc, clock12, fit, nextUp, stacked,
+    disrupted: board => board.takeover ?? board.directions.some(d => d.disruption && d.disruption.severity === "major"),
+  };
+})();
+(function () {
+  const S = window.SIGN_CONFIG;
+  const esc = CT.esc;
+  const MINUTE = 60 * 1000;
+  const feeds = {
+    menu: { url: S.menuUrl, every: 30 * MINUTE },
+    announcements: { url: S.announcementsUrl, every: 5 * MINUTE, parse: SCHOOL_CORE.parseAnnouncements },
+    weather: {
+      url: `https://api.open-meteo.com/v1/forecast?latitude=${S.weather.lat}&longitude=${S.weather.lon}` +
+        "&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,temperature_2m_min" +
+        "&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles&past_days=7&forecast_days=3",
+      every: 30 * MINUTE,
+    },
+  };
+  function feed(f) {
+    if (!f.url) return Promise.resolve(null);
+    if (f.pending || (f.data && Date.now() - f.at < f.every)) return f.pending || Promise.resolve(f.data);
+    f.pending = fetch(f.url, { cache: "no-store", signal: AbortSignal.timeout(10000) })
+      .then(r => (r.ok ? r.text() : null)).then(t => (t == null ? null : (f.parse || JSON.parse)(t)))
+      .catch(e => { console.warn(f.url, e); return null; })
+      .then(d => { f.pending = null; if (d) { f.data = d; f.at = Date.now(); } else f.at = Date.now() - f.every + MINUTE; return f.data; });
+    return f.pending;
+  }
+  async function get(at) {
+    const [menu, announcements, weather] = await Promise.all([feed(feeds.menu), feed(feeds.announcements), feeds.weather && feed(feeds.weather)]);
+    return SCHOOL_CORE.today(at, { menu, announcements, weather });
+  }
+  function lunchHtml(l, level) {
+    if (!l) return `<div class="lunch"><div class="none">No lunch menu posted for the next few days</div></div>`;
+    const secs = level >= 4 ? l.sections.filter(s => s.key !== "sandwich" && s.key !== "salad") : l.sections;
+    const kcls = s => s.key.split(" ").map(k => `k-${k}`).join(" ");
+    if (level >= 3) return `<div class="lunch">${secs.map(s => `<p class="inline"><b class="${kcls(s)}">${esc(s.label)}</b>${esc(s.short[0])}</p>`).join("")}</div>`;
+    const items = s => (level === 0 ? s.items : level === 1 ? s.items.slice(0, 1) : s.short.slice(0, 1));
+    return `<div class="lunch">${secs.map(s => `<div><h3 class="${kcls(s)}">${esc(s.label)}</h3>${items(s).map(i => `<p>${esc(i)}</p>`).join("")}</div>`).join("")}</div>`;
+  }
+  function lunchHead(l) {
+    if (!l) return { title: "Lunch", sub: "" };
+    const title = l.when === "Today" ? "Lunch" : l.when === "Tomorrow" ? "Tomorrow's lunch" : `${l.when}'s lunch`;
+    return { title, sub: l.when === "Today" || l.when === "Tomorrow" ? `${l.when} · ${l.dateLabel}` : l.dateLabel };
+  }
+  function lunch(school, { condensed = false } = {}) {
+    const l = school && school.lunch, h = lunchHead(l);
+    return { title: h.title, sub: h.sub, levels: condensed ? [3, 4] : [0, 1, 2, 3, 4], html: lv => lunchHtml(l, lv) };
+  }
+  const annHtml = (list, max, details, cls = "") =>
+    `<div class="ann ${cls}">${list.slice(0, max).map(a => `<div class="a"><b>${esc(a.text)}</b>${details && a.detail ? `<span>${esc(a.detail)}</span>` : ""}</div>`).join("")}</div>`;
+  function notices(school) {
+    const a = (school && school.announcements) || [];
+    return {
+      title: "Announcements", sub: "",
+      levels: [{ max: 4, det: true }, { max: 3, det: true }, { max: 3, det: false }, { max: 2, det: false }],
+      html: o => (a.length ? annHtml(a, o.max, o.det, "big") : `<div class="none">No announcements today</div>`),
+    };
+  }
+  const SUN = "#e9a100", CLOUD = "#8f99a4", RAIN = "#2f6fc8", MOON = "#7c8698";
+  const cloud = (dx = 0, dy = 0) =>
+    `<path transform="translate(${dx} ${dy})" d="M14 37h21a8.5 8.5 0 0 0 1-17 11 11 0 0 0-21-2.5A9.5 9.5 0 0 0 14 37z" fill="#fff" stroke="${CLOUD}" stroke-width="3" stroke-linejoin="round"/>`;
+  const rays = (cx, cy, r1, r2) => Array.from({ length: 8 }, (_, i) => {
+    const a = (i * Math.PI) / 4, c = Math.cos(a), s = Math.sin(a);
+    return `<line x1="${(cx + c * r1).toFixed(1)}" y1="${(cy + s * r1).toFixed(1)}" x2="${(cx + c * r2).toFixed(1)}" y2="${(cy + s * r2).toFixed(1)}"/>`;
+  }).join("");
+  const ICONS = {
+    sun: `<g stroke="${SUN}" stroke-width="3" stroke-linecap="round" fill="none"><circle cx="24" cy="24" r="8.5"/>${rays(24, 24, 13.5, 18.5)}</g>`,
+    moon: `<path d="M30 9a15 15 0 1 0 9 26A13 13 0 0 1 30 9z" fill="none" stroke="${MOON}" stroke-width="3" stroke-linejoin="round"/>`,
+    "cloud-sun": `<g stroke="${SUN}" stroke-width="3" stroke-linecap="round" fill="none"><circle cx="17" cy="16" r="6.5"/>${rays(17, 16, 10.5, 14)}</g>${cloud(4, 4)}`,
+    "cloud-moon": `<path d="M19 6a10 10 0 1 0 8 15A9 9 0 0 1 19 6z" fill="none" stroke="${MOON}" stroke-width="3" stroke-linejoin="round"/>${cloud(4, 4)}`,
+    cloud: cloud(0, 0),
+    fog: `${cloud(0, -5)}<g stroke="${CLOUD}" stroke-width="3" stroke-linecap="round"><line x1="10" y1="39" x2="38" y2="39"/><line x1="14" y1="45" x2="34" y2="45"/></g>`,
+    rain: `${cloud(0, -5)}<g stroke="${RAIN}" stroke-width="3" stroke-linecap="round"><line x1="17" y1="38" x2="14" y2="45"/><line x1="25" y1="38" x2="22" y2="45"/><line x1="33" y1="38" x2="30" y2="45"/></g>`,
+    snow: `${cloud(0, -5)}<g fill="${CLOUD}"><circle cx="16" cy="41" r="2.2"/><circle cx="24" cy="44" r="2.2"/><circle cx="32" cy="41" r="2.2"/></g>`,
+    storm: `${cloud(0, -5)}<path d="M25 34l-5 8h6l-4 7" fill="none" stroke="${SUN}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+  };
+  const icon = name => `<svg class="ico" viewBox="0 0 48 48" aria-hidden="true">${ICONS[name] || ICONS.cloud}</svg>`;
+  const hourLabel = hh => `${hh % 12 || 12} ${hh < 12 ? "AM" : "PM"}`;
+  const deg = n => `${Math.round(n)}°`;
+  const RAIN_WORTH_SAYING = 30;
+  function weather(school) {
+    const w = school && school.weather;
+    return {
+      title: "Weather", sub: "", levels: [4, 0],
+      html: hours => {
+        if (!w || !w.now) return `<div class="none">Weather unavailable</div>`;
+        const t = w.today;
+        const rain = w.restOfDayRain >= RAIN_WORTH_SAYING ? `<span class="rain">Rain ${w.restOfDayRain}%</span>` : "";
+        const later = Array.from({ length: hours }, (_, i) => w.hours[2 * (i + 1) - 1]).filter(Boolean);
+        return `<div class="wx-now">${icon(w.now.icon)}<span class="t">${deg(w.now.temp)}</span><span><b>${esc(w.now.label)}</b>${t ? ` · H ${deg(t.hi)} · L ${deg(t.lo)}` : ""}</span>${rain}</div>` +
+          (later.length ? `<div class="wx-row">${later.map(h => `<span><small>${hourLabel(h.hh)}</small><em>${icon(h.icon)}<b>${deg(h.temp)}</b>${h.rainChance >= RAIN_WORTH_SAYING ? `<i>${h.rainChance}%</i>` : ""}</em></span>`).join("")}</div>` : "");
+      },
+    };
+  }
+  window.SCHOOL = {
+    get, lunch, notices,
+    weather,
+  };
+})();
+(function () {
+  const S = window.SIGN_CONFIG;
+  const $ = id => document.getElementById(id);
+  const esc = CT.esc;
+  if (!("ascentOverride" in FontFace.prototype)) document.documentElement.classList.add("no-override");
+  const ctRegion = (board, height, mode) => `<section class="region ct ${mode}" style="height:${height}px">
+    <header class="hdr"><h1>${esc(board.station.name)}</h1><span class="clk">${CT.clock12(board.now.at)}</span></header>
+    <main class="board" id="board"></main></section>`;
+  const schoolRegion = (p, id, cls = "grow") =>
+    `<section class="region school ${cls}"><header class="shdr"><h2>${esc(p.title)}</h2><span>${esc(p.sub || "")}</span></header>
+    <div class="sbody ${p.bodyClass || ""}" id="${id}"></div></section>`;
+  function compose(board, { height, mode = "half", caltrain = CT.stacked, chain, panel = null, foot = "" }) {
+    $("layout").innerHTML = ctRegion(board, height, mode) + (panel ? schoolRegion(panel, "sbody") : "") + foot;
+    if (foot) $("board").parentElement.style.height = `${height - [...document.querySelectorAll(".nalert")].reduce((h, e) => h + e.offsetHeight, 0)}px`;
+    caltrain(board, $("board"), chain);
+    if (panel) CT.fit($("sbody"), panel.levels, panel.html);
+  }
+  function composeSchool(panels, order, top = "") {
+    $("layout").innerHTML = top + panels.map((p, i) => schoolRegion(p, `s-${i}`, "share")).join("");
+    const lv = panels.map(() => 0);
+    const fill = () => panels.forEach((p, i) => { $(`s-${i}`).innerHTML = p.html(p.levels[lv[i]]); });
+    const sign = $("sign"), canStep = i => lv[i] < panels[i].levels.length - 1;
+    fill();
+    while (sign.scrollHeight > sign.clientHeight + 1 && order.some(canStep)) {
+      for (const i of order) if (canStep(i)) { lv[i]++; fill(); if (sign.scrollHeight <= sign.clientHeight + 1) return; }
+    }
+  }
+  const morning = (s, top) => composeSchool([SCHOOL.weather(s), SCHOOL.notices(s), SCHOOL.lunch(s, { condensed: true })], [1, 2, 0], top);
+  const halfCaltrain = CT.stacked;
+  const halfBottom = s => SCHOOL.lunch(s);
+  const moreBottom = s => SCHOOL.notices(s);
+  const alertBars = board => (board.alerts || []).slice(0, 2).map(a =>
+    `<section class="region nalert"><b>${esc(a.header)}</b>${a.footer ? `<span>${esc(a.footer)}</span>` : ""}</section>`).join("");
+  const all = board => compose(board, { height: 800, mode: "full", caltrain: CT.nextUp, foot: alertBars(board) });
+  function draw(board, school, at) {
+    let stage = DAYPARTS.stage(at, S.times);
+    if (stage.id === "school") return morning(school);
+    if (!board) return morning(school, `<section class="region offline"><span>Caltrain departures unavailable</span></section>`);
+    if (stage.height && stage.height < 800 && CT.disrupted(board)) stage = DAYPARTS.STAGES[3];
+    if (stage.id === "half") return compose(board, { height: 400, caltrain: halfCaltrain, panel: halfBottom(school) });
+    if (stage.id === "more") {
+      compose(board, { height: 560, mode: "full mid", caltrain: CT.nextUp, panel: moreBottom(school),
+        chain: [{ later: 1, full: true }, { later: 1, full: false }, { later: 1, full: true, tight: true }, { later: 1, full: false, tight: true }] });
+      return;
+    }
+    return all(board);
+  }
+  let last = null, seq = 0;
+  const redraw = () => last && draw(...last);
+  CT.poll({ min: 2, max: 7, downstream: "all" }, async board => {
+    const at = board ? board.now.at : Date.now() / 1000;
+    const mine = ++seq;
+    const school = await SCHOOL.get(at);
+    if (mine !== seq) return;
+    $("connecting").style.display = "none";
+    last = [board, school, at];
+    draw(...last);
+  });
+  if (document.fonts) { document.fonts.ready.then(redraw); document.fonts.addEventListener("loadingdone", redraw); }
+})();
+</script>
+</body>
+</html>

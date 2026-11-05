@@ -1,0 +1,4 @@
+[
+  { "text": "TestAlert", "detail": "just testing subtitles.", "starts": "2026-11-02", "ends": "2026-11-04" },
+  { "text": "Second alert", "detail": "this does something", "ends": "2026-11-07" }
+]

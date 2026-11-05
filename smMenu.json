@@ -1,0 +1,530 @@
+{
+  "2026-11-02": {
+    "omnivore": {
+      "title": "Platillos Latino",
+      "items": [
+        "Beef Albondigas",
+        "Chicken Fajitas, Bellpeppers and Onions, Flour Tortillas, sides of Pico De Gallo, Guacamole and Sour Cream"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Poblano Pepper and Oaxaca Cheese Tamales, Roasted Salsa, Sour Cream, Shredded Lettuce and Winter Squash"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Nopalito and Bellpepper Tamale, Roasted Salsa, Sour Cream and Guacamole and Winter Squash"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Vegetarian Caprese Sandwich-Vine Ripened Tomatoes, Organic Mozzarella, Fresh Basil Pesto on a Sourdough Baguette"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Organic Vegetarian Caprese Salad with Vine Ripened Tomatoes, Fresh Mozzarella and Farm Grown Basil tossed in Olive Oil and House Seasonings"
+      ]
+    }
+  },
+  "2026-11-03": {
+    "omnivore": {
+      "title": "Global Adventure",
+      "items": [
+        "Butternut Squash with French Bread",
+        "Turkey Bolognese with Rigatoni Pasta, Ratto Ranch Broccoli and Garlic Bread"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Vegetarian Lentil Bolognese with Penne Pasta, Ratto Ranch Broccoli and Garlic Bread"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Vegetarian Lentil Bolognese with Penne Pasta, Ratto Ranch Broccoli and Garlic Bread"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "San Mateo Sub-Genoa Salami, Honey Baked Ham, Organic Shredded Lettuce, Pepperoncini, Provolone Cheese on Artisan Hoagie"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Marinated Chicken Greek Salad-Organic Romaine and Red Leaf Lettuce, Organic Feta Cheese, Tomatoes, Kalamata Olives, Red Onions Tossed in an Oregano Lemon Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-04": {
+    "omnivore": {
+      "title": "Diwali",
+      "items": [
+        "Tofu Miso",
+        "Free Range Chicken Breast Tikka Masala, Saffron Lemon Scented Rice and Aloo Gobi"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Tofu Tikka Masala, Saffron Lemon Scented Rice and Aloo Gobi"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Tofu Tikka Masala, Saffron Lemon Scented Rice and Aloo Gobi"
+      ]
+    },
+    "sandwich": {
+      "title": "Something Different",
+      "items": [
+        "Samosas and Mango Lassi"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Mexican Vegetarian Caesar Salad-Organic Romaine Lettuce, Pepitas, Cotija Cheese, Corn Tortilla Strips Tossed in a Mexican Cilantro Caesar Dressing"
+      ]
+    }
+  },
+  "2026-11-05": {
+    "omnivore": {
+      "title": "Asian Inspired",
+      "items": [
+        "Tomato Basil",
+        "Roasted Pork Loin rubbed in Asian Spices, Steamed Jasmine Rice and Baby Del Cabo Farm Bok Choy"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Gochuchang Wo Chong Tofu marinated in Asian Spices, Steamed Jasmine Rice and Baby Del Cabo Farm Bok Choy"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Gochuchang Wo Chong Tofu marinated in Asian Spices, Steamed Jasmine Rice and Baby Del Cabo Farm Bok Choy"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Fresh Strawberries on Flakey Butter Croissant with Sweet Whipped Cream Cheese"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Classic Chinese Chicken Salad-Asian Marinated Chicken, Napa and Romaine, Red Peppers, Bean Sprouts, Mandarin Oranges, Celery and Crispy Rice Noodles Tossed in a Soy Ginger Dressing"
+      ]
+    }
+  },
+  "2026-11-06": {
+    "omnivore": {
+      "title": "Wild Caught",
+      "items": [
+        "Chicken and Rice",
+        "Wild Caught Salmon Seasoned in kewpie Mayonnaise, Soy Sauce, Sirracha, Baked on top of Sushi rice and Garnished with Sesame Seeds, Nori, Kewpie and Bull Dog Sauce"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Marinated Tempeh Seasoned in kewpie Mayonnaise, Soy Sauce, Sirracha, Baked on top of Sushi rice and Garnished with Sesame Seeds, Nori, Kewpie and Bull Dog Sauce"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Marinated Tempeh Seasoned in kewpie Mayonnaise, Soy Sauce, Sirracha, Baked on top of Sushi rice and Garnished with Sesame Seeds, Nori, Kewpie and Bull Dog Sauce"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Rafa's Grass Fed Mini Beef Sliders, Secret Sauce, Shredded Lettuce on Slider Buns"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Roasted Butternut Squash, Caramelized Fig, Organic Arugula and Winter Greens, Dried Cranberries Tossed in a Citrus Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-09": {
+    "omnivore": {
+      "title": "Meatless Monday",
+      "items": [
+        "Mary's Chicken Noodle",
+        "Bloomsdale Spinach and Organic Veggie Lasagna, Side Caesar Salad Garlic Toast"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Bloomsdale Spinach and Organic Veggie Lasagna, Side Caesar Salad Garlic Toast"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Vegan Layered Lasagna with Medley of Veggies, Side Garlic Bread and Garden Salad"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Roasted Sweet Potato, Whipped Feta Cheese, Arugula, Sundried tomatoes and Honey Drizzle on Brioche Buns"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Classic Chef Salad-Organic Romaine Lettuce, Chicken, Bleu Cheese, Cage Free Eggs and Cheddar Cheese tossed in Ranch Dressing"
+      ]
+    }
+  },
+  "2026-11-10": {
+    "omnivore": {
+      "title": "Platillos Latino",
+      "items": [
+        "Beef Chili",
+        "Slow Braised and Citrus marinated Chicken, Flour Tortillas, and sides shredded Lettuce, Tomatoes, Onions and Cotija Cheese"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Citrus marinated Tofu, Flour Tortillas, and sides shredded Lettuce, Tomatoes, Onions and Cotija Cheese"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Citrus marinated Tofu, Flour Tortillas, and sides shredded Lettuce, Tomatoes, Onions and Cotija Cheese"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "The Golden Gate-Thinly Sliced Roasted Beef, Dwelley Red Onions, Vine Ripened Tomatoes, Green Leaf Lettuce on Sliced Sourdough Bread"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Vegetarian Caprese Salad-Organic Little Gem Lettuce, Vine Ripened Tomatoes, Pearls of Fresh Buffalo Mozzarella Cheese, Chiffonade of Fresh Basil Tossed with Olive Oil and Balsamic Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-11": {
+    "omnivore": {
+      "title": "Asian Inspired",
+      "items": [
+        "Kale Tortellini",
+        "Marinated in Asian Spices and Soy, Sesame Sauce Beef Steak Bites and Broccoli with Veggie Fried Rice"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Asian Tempeh and Broccoli with Veggie Fried Rice"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Asian Tempeh and Broccoli with Veggie Fried Rice"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Vegetarian Bahn Mi-Organic Wo Chong Tofu, Pickled Daikon Radish and Carrots, Fresh Jalapenos and Cilantro on Ciabatta Roll"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Rainbow Beet Salad-Organic Winter Greens and Arugula, Dwelley Red Onions, Organic Feta Cheese, Roasted Fennel with Red Wine Oregano Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-12": {
+    "omnivore": {
+      "title": "Kitchen Table",
+      "items": [
+        "Minestrone",
+        "Free Range Chicken Parmesan, Warm Bow Tie Pasta with Olive Oil, Fresh Tomatoes and Ratto Ranch Brussel Sprouts"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Eggplant Parmesan, Warm Bow Tie Pasta with Olive Oil, Fresh Tomatoes and Ratto Ranch Brussel Sprouts"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Eggplant Parmesan, Warm Bow Tie Pasta with Olive Oil, Fresh Tomatoes and Ratto Ranch Brussel Sprouts"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "The Cubana-Roasted Pork, Ham and Pickle Chips on a Hoagie Roll with Mustard"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Mediterranean Orzo Salad-Organic Greens, Organic Orzo, Fresh Tomatoes, Feta Cheese and Kalamata Olives with Side Lemon Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-13": {
+    "omnivore": {
+      "title": "Street Food",
+      "items": [
+        "Vegetarian Posole",
+        "Roasted Pork Rouladen with a Lemon Butter sauce and Wild Rice Pilaf with Side Garden Salad"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Meatless Tofu Pattie with a Lemon Butter sauce and Wild Rice Pilaf with Side Garden Salad"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Meatless Tofu Pattie with a Lemon Butter sauce and Wild Rice Pilaf with Side Garden Salad"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "California Vegetarian-Organic Grilled Zucchini, Red Peppers, Onions and Eggplant, Feta Cheese Cream, Organic Green Leaf Lettuce and Grilled Tomatoes on Dutch Crunch Baguette"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Roasted Butternut Squash, Caramelized Fig, Organic Arugula and Winter Greens, Dried Cranberries Tossed in a Citrus Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-16": {
+    "omnivore": {
+      "title": "Global Adventure",
+      "items": [
+        "Chinese Egg Drop",
+        "Chicken Alfredo, Penne Pasta Noodles in a creamy Alfredo Sauce, Garlic Toast and side Caesar Salad"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Veggie Alfredo, Penne Pasta Noodles in a creamy Alfredo Sauce, Garlic Toast and side Caesar Salad"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Penne Pasta Noodles in a House Lentil Marinara Sauce, Garlic Toast and side Garden Salad"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Vegetarian Caprese Sandwich-Vine Ripened Tomatoes, Organic Mozzarella, Fresh Basil Pesto on a Sliced Olive Baguette"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Classic Cobb Salad-Organic Romaine Lettuce, Free Range Chicken, Applewood smoked Bacon, Point Reyes Bleu Cheese, Organic Tomatoes and Cucumbers with Side White Balsamic Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-17": {
+    "omnivore": {
+      "title": "Kitchen Table",
+      "items": [
+        "Beef Barley",
+        "Wild Caught Alaskan Cod in a Lemon Butter Sauce, Wild Rice Pilaf and Roasted Zucchini"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Stuffed Bellpeppers with Red Quinoa, Medley of Veggies, Wild Rice Pilaf and Roasted Zucchini"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Stuffed Bellpeppers with Red Quinoa, Medley of Veggies, Wild Rice Pilaf and Roasted Zucchini"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Wild Caught Tuna Salad Sandwich-Organic Lettuce, Tomatoes on Sliced Sourdough Bread"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Bloomsdale Spinach, Arugula, Roasted Kabocha, Feta Cheese, Pomegranate Seeds Tossed in a Grapefruit Vinaigrette"
+      ]
+    }
+  },
+  "2026-11-18": {
+    "omnivore": {
+      "title": "Platillos Latino",
+      "items": [
+        "Minestrone",
+        "Marinated in Mexican Spices Beef Carne Asada, Lime Cilantro Rice and Chayote Squash"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Season Portabello Mushroom Steaks, Lime Cilantro Rice and Chayote Squash"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Season Portabello Mushroom Steaks, Lime Cilantro Rice and Chayote Squash"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "California Veggie on Whole Wheat Bread with Cream Cheese, Sprouts, Roasted Squash and Bellpepper"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Mexican Free Range Chicken Caesar Salad-Organic Romaine Lettuce, Pepitas, Cotija Cheese, Corn Tortilla Strips Tossed in a Mexican Cilantro Caesar Dressing"
+      ]
+    }
+  },
+  "2026-11-19": {
+    "omnivore": {
+      "title": "Thanksgiving Celebration",
+      "items": [
+        "Pumpkin",
+        "Carved Free Range Turkey, Old Fashion Mashed Potatoes, Green Beans, Cranberry Sauce, House Made Corn Bread"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Stuffed Acorn"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Stuffed Acorn"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Bagels and Cream Cheese"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Pasta Salad with Olives, Tomatoes and Mozzarella tossed in Olive Oil and Seasonings"
+      ]
+    }
+  },
+  "2026-11-20": {
+    "omnivore": {
+      "title": "Asian Inspired",
+      "items": [
+        "Pureed Bean and Pork Chorizo",
+        "Classic Chicken Teriyaki, Steamed Jasmine Rice and Organic Del Cabo Farms Broccoli"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Wo Chong Tofu Teriyaki, Steamed Jasmine Rice and Organic Del Cabo Farms Broccoli"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "Wo Chong Tofu Teriyaki, Steamed Jasmine Rice and Organic Del Cabo Farms Broccoli"
+      ]
+    },
+    "sandwich": {
+      "title": "Global Wrap",
+      "items": [
+        "Korean BBQ Steak Wrap-Shaved Marinated Steak, Brown Rice, Kimchi, Sweet Egg, Scallions, Marinated Bean Sprouts and Cucumbers, Red Leaf Lettuce and Gochujang Sauce"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Mediterranean Barley Salad-Organic Cucumber, Red Bell Pepper, Kalamata Olives, Greek Feta Cheese, Green Onion and Fresh Parsley Tossed in Olive Oil and Lemon Juice"
+      ]
+    }
+  },
+  "2026-11-30": {
+    "omnivore": {
+      "title": "Kitchen Table",
+      "items": [
+        "French Onion with Gnocchi",
+        "Free Range Chicken in a Creamy and Cheesey Alfredo Sauce, Penne Pasta and Side Sauteed Greens"
+      ]
+    },
+    "vegetarian": {
+      "title": "Earthly Selections",
+      "items": [
+        "Butternut Squash and Tofu in a Creamy and Cheesey Alfredo Sauce, Penne Pasta and Side Sauteed Greens"
+      ]
+    },
+    "vegan": {
+      "title": "Plant Inspired",
+      "items": [
+        "House Lentil Marinara Sauce, Penne Pasta and Side Sauteed Greens"
+      ]
+    },
+    "sandwich": {
+      "title": "Sandwich Favorite",
+      "items": [
+        "Turkey Club, Sliced Turkey, applewood bacon, Pesto Sauce and Mozzarella Cheese on Grilled White Sliced Bread"
+      ]
+    },
+    "salad": {
+      "title": "Superfood Tossed",
+      "items": [
+        "Organic Vegetarian Caprese Salad with Vine Ripened Tomatoes, Fresh Mozzarella and Farm Grown Basil tossed in Olive Oil and House Seasonings"
+      ]
+    }
+  }
+}
